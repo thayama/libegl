@@ -161,6 +161,7 @@ EGLint eglGetError(void)
 
 #ifdef WANT_WAYLAND
 static struct gbm_device *__gbm;
+static struct wl_display *__wl_display = NULL;
 #endif
 
 EGLDisplay eglGetDisplay(EGLNativeDisplayType display_id)
@@ -173,6 +174,8 @@ EGLDisplay eglGetDisplay(EGLNativeDisplayType display_id)
 		void *head = *(void**)display_id;
 		if (head == gbm_create_device)
 			__gbm = (struct gbm_device*)display_id;
+		if (head == &wl_display_interface)
+			__wl_display = (struct wl_display*)display_id;
 	}
 #endif
 
@@ -532,7 +535,7 @@ static EGLBoolean __eglBindWaylandDisplayWL(EGLDisplay dpy,
 	}
 	EGL_DEBUG("%s: decice_name=%s\n", __func__, device_name);
 
-	__wl_kms = wayland_kms_init(display, device_name, fd);
+	__wl_kms = wayland_kms_init(display, __wl_display, device_name, fd);
 	return EGL_TRUE;
 }
 

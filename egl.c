@@ -24,6 +24,8 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 
+#define IMG_LIBEGL_PATH	"libEGL-img.so"
+
 #if defined(DEBUG)
 #	define EGL_DEBUG(s, x...)	{ printf(s, ## x); }
 #else
@@ -144,7 +146,7 @@ static void *_libegl = NULL;
 
 static void _init_egl()
 {
-	const char *filename = (getenv("LIBEGL")) ? getenv("LIBEGL") : "libEGL-sgx.so";
+	const char *filename = (getenv("LIBEGL")) ? getenv("LIBEGL") : IMG_LIBEGL_PATH;
 	_libegl = dlopen(filename, RTLD_LAZY);
 }
 

@@ -24,7 +24,7 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 
-#define IMG_LIBEGL_PATH	"libEGL-img.so"
+#define IMG_LIBEGL_PATH	"libEGL-pvr.so"
 
 #if defined(DEBUG)
 #	define EGL_DEBUG(s, x...)	{ printf(s, ## x); }

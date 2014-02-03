@@ -3,7 +3,7 @@ EGL wrapper library for Wayland.
 This EGL library wraps IMG's OpenGL/ES library.
 
 This library assumes that the real EGL library is either set in the environment
-variable LIBEGL or the name is libEGL-sgx.so for now. Yes, it's hard coded.
+variable LIBEGL or the name is libEGL-pvr.so for now. Yes, it's hard coded.
 
 It also assumes that the EGL library could be loaded with dlopen(). Make sure
 that the library exists in the search path.

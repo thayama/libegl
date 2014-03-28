@@ -212,9 +212,11 @@ EGLBoolean eglTerminate(EGLDisplay dpy)
 	return _eglTerminate(dpy);
 }
 
+#define EGL_WL_EXT_STRING "EGL_WL_bind_wayland_display "
+
 const char *eglQueryString(EGLDisplay dpy, EGLint name)
 {
-	static char _eglextstr[512];
+	static char *_eglextstr = NULL;
 	const char *ret;
 
 	EGL_DEBUG("%s: %s\n", __FILE__, __func__);
@@ -224,10 +226,18 @@ const char *eglQueryString(EGLDisplay dpy, EGLint name)
 #ifdef WANT_WAYLAND
 	if (name == EGL_EXTENSIONS) {
 		assert(ret != NULL);
-		snprintf(_eglextstr, sizeof(_eglextstr),
-			 "%sEGL_WL_bind_wayland_display ", ret);
+
+		if (!_eglextstr) {
+			_eglextstr = calloc(1, strlen(ret) + strlen(EGL_WL_EXT_STRING) + 1);
+			if (_eglextstr) {
+				strcat(_eglextstr, ret);
+				strcat(_eglextstr, EGL_WL_EXT_STRING);
+			} else {
+				_eglextstr = (char*)ret;
+			}
+		}
+
 		ret = _eglextstr;
-		return ret;
 	}
 #endif
 	return ret;

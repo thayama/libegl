@@ -34,6 +34,10 @@ AM_INIT_AUTOMAKE([foreign dist-bzip2])
 # Initialize libtool
 AC_PROG_LIBTOOL
 
+# Check for dlopen
+AC_SEARCH_LIBS([dlopen], [dl dld], [],
+               [AC_MSG_FAILURE([Dynamic linking loader missing])])
+
 # Obtain compiler/linker options for dependencies
 PKG_CHECK_MODULES([LIBGBM], [gbm])
 PKG_CHECK_MODULES([WAYLAND_KMS], [wayland-kms])

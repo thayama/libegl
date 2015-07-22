@@ -42,7 +42,6 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
-#include <assert.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -224,8 +223,7 @@ const char *eglQueryString(EGLDisplay dpy, EGLint name)
 	ret = _eglQueryString(dpy, name);
 
 #ifdef WANT_WAYLAND
-	if (name == EGL_EXTENSIONS) {
-		assert(ret != NULL);
+	if (ret && name == EGL_EXTENSIONS) {
 
 		if (!_eglextstr) {
 			_eglextstr = calloc(1, strlen(ret) + strlen(EGL_WL_EXT_STRING) + 1);

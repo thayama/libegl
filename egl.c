@@ -462,6 +462,8 @@ static EGLImageKHR __eglCreateImageKHR(EGLDisplay dpy, EGLContext ctx,
 					 EGLenum target, EGLClientBuffer buffer,
 					 const EGLint * attrib_list)
 {
+	const EGLint *_attrib_list;
+
 	EGL_DEBUG("%s: %s\n", __FILE__, __func__);
 	if (!_eglCreateImageKHR) {
 		/* we can't EGL_DLSYM this, because it doesn't exist in libEGL.
@@ -480,6 +482,9 @@ static EGLImageKHR __eglCreateImageKHR(EGLDisplay dpy, EGLContext ctx,
 	if (target == EGL_WAYLAND_BUFFER_WL) {
 		EGL_DEBUG("%s: %s: mapping EGL_WAYLAND_BUFFER_WL to EGL_NATIVE_PIXMAP_KHR\n", __FILE__, __func__);
 		target = EGL_NATIVE_PIXMAP_KHR;
+		_attrib_list = NULL;
+	} else {
+		_attrib_list = attrib_list;
 	}
 
 #if 0
@@ -516,8 +521,7 @@ static EGLImageKHR __eglCreateImageKHR(EGLDisplay dpy, EGLContext ctx,
 #endif
 
 	EGL_DEBUG("%s: %s (target=%d, EGL_WAYLAND_BUFFER_WL=%d, EGL_NATIVE_PIXMAP_KHR=%d) : %p\n", __FILE__, __func__, target, EGL_WAYLAND_BUFFER_WL, EGL_NATIVE_PIXMAP_KHR, _eglCreateImageKHR);
-//	return _eglCreateImageKHR(dpy, ctx, target, buffer, attrib_list);
-	return _eglCreateImageKHR(dpy, ctx, target, buffer, NULL);
+	return _eglCreateImageKHR(dpy, ctx, target, buffer, _attrib_list);
 }
 
 #ifdef WANT_WAYLAND
